@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Sistema de Autenticación con FastAPI
 
 Una API REST desarrollada con **FastAPI** que proporciona funcionalidades de autenticación de usuarios con tokens JWT. Ideal para integrar en aplicaciones web o móviles que requieran control de acceso seguro.
@@ -28,7 +28,7 @@ Una API REST desarrollada con **FastAPI** que proporciona funcionalidades de aut
    git clone <url-del-repositorio>
    cd <nombre-del-proyecto>
     ```
-
+   
 2. Crea un entorno virtual:
 
   ```bash
