@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sistema de Autenticación con FastAPI
 
 Una API REST desarrollada con **FastAPI** que proporciona funcionalidades de autenticación de usuarios con tokens JWT. Ideal para integrar en aplicaciones web o móviles que requieran control de acceso seguro.
@@ -40,3 +41,6 @@ Una API REST desarrollada con **FastAPI** que proporciona funcionalidades de aut
   ```bash
   pip install -r requirements.txt
   ```
+=======
+# Auth-System-FastAPI
+>>>>>>> 01e5c700ccb3f0ad89216877e3bcbc5e939b9a02
