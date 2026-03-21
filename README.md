@@ -41,6 +41,4 @@ Una API REST desarrollada con **FastAPI** que proporciona funcionalidades de aut
   ```bash
   pip install -r requirements.txt
   ```
-=======
-# Auth-System-FastAPI
->>>>>>> 01e5c700ccb3f0ad89216877e3bcbc5e939b9a02
+
