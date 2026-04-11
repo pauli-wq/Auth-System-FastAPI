@@ -9,7 +9,7 @@ ENV_FILE = BASE_DIR / "env"
 
 load_dotenv(ENV_FILE)  # cargar variables de entorno
 
-URL_DATABASE: str = os.getenv("DATABASE_URL", "sqlite:///./auth_system.db")
+URL_DATABASE: str = os.getenv("DATABASE_URL", "")
 
 
 # manejar configuraciones
