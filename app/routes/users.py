@@ -1,4 +1,4 @@
-from typing import Annotated, List, Union
+from typing import Annotated, List
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -44,27 +44,14 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 # obtener lista de usuarios (require estar autenticado)
 @router.get("/", response_model=List[User])
-def read_users(
-    skip: int = 0,
-    limit: int = 100,
-    db: Session = Depends(get_db),
-    current_user: Annotated[
-        Union[UserModel, None], Depends(get_current_active_user)
-    ] = None,
-):
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = db.query(UserModel).offset(skip).limit(limit).all()
     return users
 
 
 # obtener usuario por ID
 @router.get("/{user_id}", response_model=User)
-def read_user(
-    user_id: int,
-    db: Session = Depends(get_db),
-    current_user: Annotated[
-        Union[UserModel, None], Depends(get_current_active_user)
-    ] = None,
-):
+def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(UserModel).filter(UserModel.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
