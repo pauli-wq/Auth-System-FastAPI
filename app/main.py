@@ -13,6 +13,7 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     yield
     # Shutdown
+    engine.dispose()
     print("APLICACION CERRADA")
 
 
