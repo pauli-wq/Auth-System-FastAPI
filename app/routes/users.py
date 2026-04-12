@@ -103,9 +103,9 @@ def delete_user(
         raise HTTPException(status_code=404, detail="User not found")
 
     # Verificar permisos
-    if str(current_user.id) != user_id or not bool(current_user.is_superuser):
+    if str(current_user.id) != user_id:
         raise HTTPException(
-            status_code=403, detail="Not authorized to update this user"
+            status_code=403, detail="Not authorized to delete this user"
         )
 
     db.delete(db_user)
