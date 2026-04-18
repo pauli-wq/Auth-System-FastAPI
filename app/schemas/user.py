@@ -29,7 +29,7 @@ class User(UserBase):
     is_active: bool
     created_at: datetime
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 

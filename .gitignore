@@ -1,5 +1,6 @@
 .env
 env
 auth_system.db
+auth_system.db
 *.db
 __pycache__

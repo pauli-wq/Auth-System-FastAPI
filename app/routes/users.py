@@ -1,4 +1,4 @@
-from typing import Annotated, List
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -8,8 +8,17 @@ from app.database.database import get_db
 from app.models.user import User as UserModel
 from app.routes.auth import get_current_active_user
 from app.schemas.user import User, UserCreate, UserUpdate
+from app.schemas.user import User as UserResponse
 
 router = APIRouter(prefix="/users", tags=["Users"])
+
+
+# obtener informacion del usuario autenticado
+@router.get("/profile", response_model=UserResponse)
+async def read_user_profile(
+    current_user: Annotated[UserModel, Depends(get_current_active_user)],
+):
+    return current_user
 
 
 # crear nuevo usuario
@@ -43,7 +52,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 
 # obtener lista de usuarios (require estar autenticado)
-@router.get("/", response_model=List[User])
+@router.get("/", response_model=list[User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = db.query(UserModel).offset(skip).limit(limit).all()
     return users
@@ -55,7 +64,6 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(UserModel).filter(UserModel.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-
     return db_user
 
 
@@ -72,7 +80,7 @@ def update_user(
         raise HTTPException(status_code=404, detail="User not found")
 
     # Verificar permisos (solo editar el propio perfil o ser admin)
-    if str(current_user.id) != user_id or not bool(current_user.is_superuser):
+    if str(current_user.id) != user_id and not bool(current_user.is_superuser):
         raise HTTPException(
             status_code=403, detail="Not authorized to update this user"
         )
@@ -92,7 +100,7 @@ def update_user(
 
 
 # borrar usuario (el propio usuario o admin)
-@router.delete("/{user_id", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(
     user_id: int,
     current_user: Annotated[UserModel, Depends(get_current_active_user)],
@@ -107,7 +115,6 @@ def delete_user(
         raise HTTPException(
             status_code=403, detail="Not authorized to delete this user"
         )
-
     db.delete(db_user)
     db.commit()
     return None

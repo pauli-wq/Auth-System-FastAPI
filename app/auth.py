@@ -12,6 +12,7 @@ from app.core.security import create_access_token, verify_pass
 from app.database.database import get_db
 from app.models.user import User as UserModel
 from app.schemas.token import Token, TokenData
+from app.schemas.user import User as UserResponse
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -81,3 +82,11 @@ async def login_for_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+# obtener informacion del usuario autenticado
+@router.get("/me", response_model=UserResponse)
+async def read_users_me(
+    current_user: Annotated[UserModel, Depends(get_current_active_user)],
+):
+    return current_user
