@@ -4,3 +4,9 @@ auth_system.db
 auth_system.db
 *.db
 __pycache__
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.cpython-*
+.venv/s
