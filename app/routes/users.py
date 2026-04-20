@@ -111,7 +111,7 @@ def delete_user(
         raise HTTPException(status_code=404, detail="User not found")
 
     # Verificar permisos
-    if str(current_user.id) != user_id:
+    if int(current_user.id) != int(user_id):
         raise HTTPException(
             status_code=403, detail="Not authorized to delete this user"
         )
