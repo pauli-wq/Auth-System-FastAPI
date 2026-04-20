@@ -1,7 +1,5 @@
 from fastapi import status
 
-from app.tests.conftest import test_engine
-
 
 # test para crear usuarios
 def test_create_user(client):
