@@ -59,3 +59,12 @@ def test_update_user_unauthorized(client, test_user):
     # actualizamos sin enviar el token header
     resp = client.put(f"/users/{test_user.id}", json={"username": "Testing User"})
     assert resp.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+# test para eliminar usuario
+def test_delete_user(client, test_user, override_auth):
+    resp = client.delete(f"/users/{test_user.id}")
+    assert resp.status_code == status.HTTP_204_NO_CONTENT
+
+    resp = client.get(f"/users/{test_user.id}")
+    assert resp.status_code == status.HTTP_404_NOT_FOUND
