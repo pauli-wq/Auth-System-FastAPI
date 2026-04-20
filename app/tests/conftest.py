@@ -8,6 +8,9 @@ from app.core.security import get_pass_hash
 from app.database.database import Base, get_db
 from app.main import app
 from app.models.user import User
+from app.routes.auth import (
+    get_current_user,  # importamos para el mock de 'delete user' por ID
+)
 
 # Creamos una base de datos temporal para las pruebas (SQLite en memoria)
 DATABASE_URL_TEST = "sqlite:///:memory:"
@@ -21,6 +24,7 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_
 @pytest.fixture
 def test_user(db_session: Session):
     user = User(
+        id=1,
         username="testuser",
         full_name="Andres Perez",
         email="test@example.com",
@@ -31,6 +35,20 @@ def test_user(db_session: Session):
     db_session.commit()
     db_session.refresh(user)
     return user
+
+
+# mock para el test de 'delete user' por ID, que imita el modelo de la DB
+@pytest.fixture
+def override_auth(test_user):
+    def mock_get_current_user():
+        return test_user
+
+    # sobreescribimos
+    app.dependency_overrides[get_current_user] = mock_get_current_user
+    yield
+
+    # limpiamos el override
+    app.dependency_overrides.clear()
 
 
 # Creamos las tablas en la base de datos de prueba
